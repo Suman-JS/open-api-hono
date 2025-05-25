@@ -27,3 +27,4 @@ lerna-debug.log*
 .DS_Store
 
 dev.db
+test.db
