@@ -19,8 +19,10 @@ export default function configureOpenAPI(app: AppOpenAPI) {
         url: "/doc",
         theme: "elysiajs",
         darkMode: true,
+        isEditable: true,
+        title: "Test",
         pageTitle: "Task API Reference",
-        layout: "modern",
+        layout: "classic",
         defaultHttpClient: {
           targetKey: "js",
           clientKey: "fetch",

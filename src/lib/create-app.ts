@@ -1,16 +1,16 @@
-import type { AppBindings } from "@/types";
+import type { Schema } from "hono";
 
+import type { AppBindings, AppOpenAPI } from "@/types";
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { compress } from "hono/compress";
 import { cors } from "hono/cors";
 import { csrf } from "hono/csrf";
+
 import { prettyJSON } from "hono/pretty-json";
-
 import { notFound, onError, serveEmojiFavicon } from "stoker/middlewares";
-import { defaultHook } from "stoker/openapi";
 
+import { defaultHook } from "stoker/openapi";
 import { pinoLogger } from "@/middlewares/pino-logger";
-import { requireCustomHeader } from "@/middlewares/require-custom-header";
 
 export function createRouter() {
   return new OpenAPIHono<AppBindings>({
@@ -31,15 +31,12 @@ export default function createApp() {
     }),
   );
   app.use(pinoLogger());
-  app.use("*", async (c, next) => {
-    if (c.req.path.startsWith("/doc") || c.req.path.startsWith("/reference")) {
-      await next();
-    } else {
-      await requireCustomHeader(c, next);
-    }
-  });
 
   app.notFound(notFound);
   app.onError(onError);
   return app;
+}
+
+export function createTestApp<S extends Schema>(router: AppOpenAPI<S>) {
+  return createApp().route("/", router);
 }

@@ -11,7 +11,7 @@ export default antfu(
       semi: true,
       quotes: "double",
     },
-    ignores: ["**/migrations/*, eslint.config.ts"],
+    ignores: ["**/migrations/*"],
   },
   {
     rules: {
